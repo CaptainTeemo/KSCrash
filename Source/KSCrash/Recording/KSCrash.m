@@ -53,7 +53,6 @@
 @interface KSCrash ()
 
 @property(nonatomic,readwrite,retain) NSString* bundleName;
-@property(nonatomic,readwrite,retain) NSString* basePath;
 
 @end
 
@@ -140,22 +139,9 @@ static NSString* getBasePath()
     return sharedInstance;
 }
 
-- (id) init
-{
-    return [self initWithBasePath:getBasePath()];
-}
-
-- (id) initWithBasePath:(NSString *)basePath
-{
-    if((self = [super init]))
-    {
+- (instancetype) init {
+    if (self = [super init]) {
         self.bundleName = getBundleName();
-        self.basePath = basePath;
-        if(self.basePath == nil)
-        {
-            KSLOG_ERROR(@"Failed to initialize crash handler. Crash reporting disabled.");
-            return nil;
-        }
         self.deleteBehaviorAfterSendAll = KSCDeleteAlways;
         self.introspectMemory = YES;
         self.catchZombies = NO;
@@ -164,6 +150,14 @@ static NSString* getBasePath()
         self.monitoring = KSCrashMonitorTypeProductionSafeMinimal;
     }
     return self;
+}
+
+// MARK: Private
+- (NSString *)basePath {
+    if (_basePath) {
+        return _basePath;
+    }
+    return getBasePath();
 }
 
 

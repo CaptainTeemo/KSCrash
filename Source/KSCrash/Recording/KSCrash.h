@@ -55,8 +55,7 @@ typedef enum
 
 #pragma mark - Configuration -
 
-/** Init KSCrash instance with custom base path. */
-- (id) initWithBasePath:(NSString *)basePath;
+@property(nonatomic, strong) NSString *basePath;
 
 /** A dictionary containing any info you'd like to appear in crash reports. Must
  * contain only JSON-safe data: NSString for keys, and NSDictionary, NSArray,
